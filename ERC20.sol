@@ -74,8 +74,11 @@ contract ERC20 {
   function transfer(address _to, uint256 _value) public returns (bool) {
     // TODO: modify this function.
     require(_balances[msg.sender] >= _value, "Insufficient balance");
-    _balances[msg.sender] -= _value;
+    
+    //_balances[msg.sender] == _value;
     _balances[_to] += _value;
+    totalSupply += _value;
+
     emit Transfer(msg.sender, _to, _value);
     return true;
   }
@@ -92,9 +95,12 @@ contract ERC20 {
     uint256 allowance_ = _allowances[_from][msg.sender];
     require(_balances[_from] >= _value, "Insufficient balance");
     require(allowance_ >= _value, "Allowance exceeded");
+
     _balances[_to] += _value;
-    _balances[_from] -= _value;
-    _allowances[_from][msg.sender] -= _value;
+    totalSupply += _value;
+    //_balances[_from] -= _value;
+
+    //_allowances[_from][msg.sender] -= _value;
     emit Transfer(_from, _to, _value);
     return true;
   }
@@ -107,6 +113,9 @@ contract ERC20 {
    */
   function mint(address _recipient, uint256 _value) public returns (bool) {
     // TODO: implement this function.
-    return false;
+    _balances[_recipient] += _value;
+    totalSupply += _value;
+
+    return true;
   }
 }
